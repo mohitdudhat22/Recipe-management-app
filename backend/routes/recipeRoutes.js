@@ -6,7 +6,28 @@ const upload = require('../middleware/uploadMiddleware');
 const logger = require('../utils/logger');
 const router = express.Router();
 
-// Create Recipe
+/**
+ * @swagger
+ * /recipes:
+ *   post:
+ *     summary: Create a new recipe
+ *     tags: [Recipes]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Recipe'
+ *     responses:
+ *       201:
+ *         description: The created recipe
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Recipe'
+ *       500:
+ *         description: Server error
+ */
 router.post('/', async (req, res) => {
   try {
     const newRecipe = new Recipe({...req.body, image: req.file ? req.file.path : null});
@@ -18,7 +39,52 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Read Recipes with pagination and filtering
+/**
+ * @swagger
+ * /recipes:
+ *   get:
+ *     summary: Retrieve a list of recipes
+ *     tags: [Recipes]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Number of items per page
+ *       - in: query
+ *         name: cuisineType
+ *         schema:
+ *           type: string
+ *         description: Filter by cuisine type
+ *       - in: query
+ *         name: ingredients
+ *         schema:
+ *           type: string
+ *         description: Filter by ingredients (comma-separated)
+ *     responses:
+ *       200:
+ *         description: A list of recipes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 recipes:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Recipe'
+ *                 totalPages:
+ *                   type: integer
+ *                 currentPage:
+ *                   type: integer
+ *       500:
+ *         description: Server error
+ */
 router.get('/', async (req, res) => {
   try {
     const { page = 1, limit = 10, cuisineType, ingredients } = req.query;
@@ -50,10 +116,37 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Read Recipe by ID
+/**
+ * @swagger
+ * /recipes/{id}:
+ *   get:
+ *     summary: Get a recipe by ID
+ *     tags: [Recipes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Recipe ID
+ *     responses:
+ *       200:
+ *         description: The recipe details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Recipe'
+ *       404:
+ *         description: Recipe not found
+ *       500:
+ *         description: Server error
+ */
 router.get('/:id', async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
     res.status(200).json(recipe);
   } catch (err) {
     logger.error(err);
@@ -61,10 +154,43 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Update Recipe
+/**
+ * @swagger
+ * /recipes/{id}:
+ *   put:
+ *     summary: Update a recipe
+ *     tags: [Recipes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Recipe ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Recipe'
+ *     responses:
+ *       200:
+ *         description: The updated recipe
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Recipe'
+ *       404:
+ *         description: Recipe not found
+ *       500:
+ *         description: Server error
+ */
 router.put('/:id', async (req, res) => {
   try {
     const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedRecipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
     res.status(200).json(updatedRecipe);
   } catch (err) {
     logger.error(err);
@@ -72,11 +198,34 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Delete Recipe
+/**
+ * @swagger
+ * /recipes/{id}:
+ *   delete:
+ *     summary: Delete a recipe
+ *     tags: [Recipes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Recipe ID
+ *     responses:
+ *       200:
+ *         description: Recipe deleted successfully
+ *       404:
+ *         description: Recipe not found
+ *       500:
+ *         description: Server error
+ */
 router.delete('/:id', async (req, res) => {
   try {
-    await Recipe.findByIdAndDelete(req.params.id);
-    res.status(200).json('Recipe deleted');
+    const deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
+    if (!deletedRecipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+    res.status(200).json({ message: 'Recipe deleted successfully' });
   } catch (err) {
     logger.error(err);
     res.status(500).json(err);

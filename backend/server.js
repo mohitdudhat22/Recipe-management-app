@@ -33,7 +33,6 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(limiter);
-
 // Routes
 app.use('/api/auth', authRoutes); // Change this line
 app.use('/api/recipes', authMiddleware, recipeRoutes);

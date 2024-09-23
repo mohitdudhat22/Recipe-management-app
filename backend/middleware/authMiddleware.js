@@ -3,6 +3,39 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 dotenv.config();
 
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   schemas:
+ *     AuthError:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           description: Authentication error message
+ */
+
+/**
+ * @swagger
+ * /api/protected:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AuthError'
+ */
 const authMiddleware = (req, res, next) => {
   const authHeader = req.header('Authorization');
   if (!authHeader) return res.status(401).json({ message: 'No token, authorization denied' });
