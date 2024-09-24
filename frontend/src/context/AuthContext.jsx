@@ -7,11 +7,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in (e.g., by checking localStorage)
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('user');
     if (token) {
-      // Validate token and set user
-      // For now, we'll just set a dummy user
       setUser({ username: 'DummyUser' });
     }
     setLoading(false);
