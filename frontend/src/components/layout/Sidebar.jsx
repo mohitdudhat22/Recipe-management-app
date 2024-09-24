@@ -27,7 +27,7 @@ const Sidebar = () => {
       anchor="left"
     >
       <List>
-        <ListItem button component={RouterLink} to="/">
+        <ListItem button component={RouterLink} to="/dashboard">
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>

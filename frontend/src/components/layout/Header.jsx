@@ -13,7 +13,7 @@ const Header = () => {
           Recipe Management
         </Typography>
         <Box>
-          <Button color="inherit" component={RouterLink} to="/">
+          <Button color="inherit" component={RouterLink} to="/dashboard">
             Home
           </Button>
           {user ? (

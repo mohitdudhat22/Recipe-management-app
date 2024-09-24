@@ -16,7 +16,7 @@ const Login = () => {
       const userData = await loginUser(email, password);
       login(userData);
       localStorage.setItem('user', JSON.stringify(userData));
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
     }

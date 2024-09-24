@@ -24,6 +24,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
+            <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="*" element={
@@ -33,7 +34,7 @@ function App() {
                   <Sidebar />
                   <main style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Routes>
-                      <Route path="/" element={<Dashboard />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/recipes" element={<RecipeList />} />
                       <Route element={<ProtectedRoute />}>
                         <Route path="/recipe/:id" element={<RecipeDetail />} />
