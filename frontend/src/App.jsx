@@ -13,6 +13,7 @@ import Register from './components/auth/Register';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import NotFound from './components/common/NotFound';
 import ErrorBoundary from './components/common/ErrorBoundary';
+import Dashboard from './components/dashboard/Dashboard';
 
 const theme = createTheme();
 
@@ -32,7 +33,8 @@ function App() {
                   <Sidebar />
                   <main style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Routes>
-                      <Route path="/" element={<RecipeList />} />
+                      <Route path="/" element={<Dashboard />} />
+                      <Route path="/recipes" element={<RecipeList />} />
                       <Route element={<ProtectedRoute />}>
                         <Route path="/recipe/:id" element={<RecipeDetail />} />
                         <Route path="/add" element={<RecipeForm />} />
