@@ -30,7 +30,8 @@ const router = express.Router();
  */
 router.post('/', async (req, res) => {
   try {
-    const newRecipe = new Recipe({...req.body, image: req.file ? req.file.path : null});
+    const newRecipe = new Recipe({...req.body, image: req.file ? req.file.path : null, author: req.user.id, 
+      author: req.body.author || req.user.username});
     const savedRecipe = await newRecipe.save();
     res.status(201).json(savedRecipe);
   } catch (err) {

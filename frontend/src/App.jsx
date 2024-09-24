@@ -13,7 +13,7 @@ import Register from './components/auth/Register';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import NotFound from './components/common/NotFound';
 import ErrorBoundary from './components/common/ErrorBoundary';
-
+import { Outlet } from 'react-router-dom';
 const theme = createTheme();
 
 function App() {
@@ -22,30 +22,32 @@ function App() {
       <AuthProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Router>
-            <div className="app">
-              <Header />
-              <div className="content">
-                <Sidebar />
-                <main>
-                  <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/" element={<RecipeList />} />
-                    <Route element={<ProtectedRoute />}>
-                      <Route path="/recipe/:id" element={<RecipeDetail />} />
-                      <Route path="/add" element={<RecipeForm />} />
-                      <Route path="/edit/:id" element={<RecipeForm />} />
-                    </Route>
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-              </div>
-            </div>
-          </Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route element={<DashboardLayout />}>
+              <Route path="/" element={<RecipeList />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="/recipe/:id" element={<RecipeDetail />} />
+                <Route path="/add" element={<RecipeForm />} />
+                <Route path="/edit/:id" element={<RecipeForm />} />
+              </Route>
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </ThemeProvider>
       </AuthProvider>
     </ErrorBoundary>
+  );
+}
+
+function DashboardLayout() {
+  return (
+    <>
+      <Header />
+      {/* <Sidebar /> */}
+      <Outlet />
+    </>
   );
 }
 

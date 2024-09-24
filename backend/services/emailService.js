@@ -25,4 +25,11 @@ const sendEmail = (to, subject, text) => {
   });
 };
 
-module.exports = sendEmail;
+const sendVerificationEmail = (to, verificationToken) => {
+  const subject = 'Verify Your Email';
+  const text = `Please click on the following link to verify your email: ${process.env.FRONTEND_URL}/verify/${verificationToken}`;
+  
+  return sendEmail(to, subject, text);
+};
+
+module.exports = { sendEmail, sendVerificationEmail };

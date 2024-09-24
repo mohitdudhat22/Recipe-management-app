@@ -15,7 +15,7 @@ const RecipeForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (id) {
+    if (id) { 
       fetchRecipe();
     }
   }, [id]);
@@ -47,6 +47,7 @@ const RecipeForm = () => {
       if (id) {
         await updateRecipe(id, recipeData);
       } else {
+        console.log(recipeData);
         await createRecipe(recipeData);
       }
       navigate('/');
