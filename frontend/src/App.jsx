@@ -13,7 +13,7 @@ import Register from './components/auth/Register';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import NotFound from './components/common/NotFound';
 import ErrorBoundary from './components/common/ErrorBoundary';
-import { Outlet } from 'react-router-dom';
+
 const theme = createTheme();
 
 function App() {
@@ -25,29 +25,29 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route element={<DashboardLayout />}>
-              <Route path="/" element={<RecipeList />} />
-              <Route element={<ProtectedRoute />}>
-                <Route path="/recipe/:id" element={<RecipeDetail />} />
-                <Route path="/add" element={<RecipeForm />} />
-                <Route path="/edit/:id" element={<RecipeForm />} />
-              </Route>
-            </Route>
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={
+              <div className="app-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                <Header />
+                <div className="content" style={{ display: 'flex', flex: 1 }}>
+                  <Sidebar />
+                  <main style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Routes>
+                      <Route path="/" element={<RecipeList />} />
+                      <Route element={<ProtectedRoute />}>
+                        <Route path="/recipe/:id" element={<RecipeDetail />} />
+                        <Route path="/add" element={<RecipeForm />} />
+                        <Route path="/edit/:id" element={<RecipeForm />} />
+                      </Route>
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </main>
+                </div>
+              </div>
+            } />
           </Routes>
         </ThemeProvider>
       </AuthProvider>
     </ErrorBoundary>
-  );
-}
-
-function DashboardLayout() {
-  return (
-    <>
-      <Header />
-      {/* <Sidebar /> */}
-      <Outlet />
-    </>
   );
 }
 

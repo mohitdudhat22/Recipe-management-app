@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, Container, Box } from '@mui/material';
+import { useNavigate, Link } from 'react-router-dom';
+import { TextField, Button, Typography, Container, Box, Paper } from '@mui/material';
 import { useAuth } from '../../hooks/useAuth';
 import { loginUser } from '../../services/api';
 
@@ -15,7 +15,6 @@ const Login = () => {
     try {
       const userData = await loginUser(email, password);
       login(userData);
-      console.log(userData);
       localStorage.setItem('user', JSON.stringify(userData));
       navigate('/');
     } catch (error) {
@@ -24,13 +23,24 @@ const Login = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
+    <Container component="main" maxWidth={false} sx={{
+      height: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 0,
+      
+    }}>
+      <Paper
+        elevation={6}
         sx={{
-          marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          padding: 4,
+          maxWidth: '400px',
+          width: '100%',
+          border: '2px solid white',
         }}
       >
         <Typography component="h1" variant="h5">
@@ -69,8 +79,16 @@ const Login = () => {
           >
             Sign In
           </Button>
+          <Box sx={{ textAlign: 'center', mt: 2 }}>
+            <Typography variant="body2">
+              Don&apos;t have an account?{' '}
+              <Link to="/register" style={{ textDecoration: 'underline', color: 'blue' }}>
+                Register here
+              </Link>
+            </Typography>
+          </Box>
         </Box>
-      </Box>
+      </Paper>
     </Container>
   );
 };

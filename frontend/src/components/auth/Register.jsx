@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, Container, Box } from '@mui/material';
+import { useNavigate, Link } from 'react-router-dom';
+import { TextField, Button, Typography, Container, Box, Paper } from '@mui/material';
 import { registerUser } from '../../services/api';
 
 const Register = () => {
@@ -20,13 +20,23 @@ const Register = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
+    <Container component="main" maxWidth={false} sx={{
+      height: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 0,
+    }}>
+      <Paper
+        elevation={6}
         sx={{
-          marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          padding: 4,
+          maxWidth: '400px',
+          width: '100%',
+          border: '2px solid white',
         }}
       >
         <Typography component="h1" variant="h5">
@@ -76,8 +86,16 @@ const Register = () => {
           >
             Register
           </Button>
+          <Box sx={{ textAlign: 'center', mt: 2 }}>
+            <Typography variant="body2">
+              Already have an account?{' '}
+              <Link to="/login" style={{ textDecoration: 'underline', color: 'blue' }}>
+                Sign in here
+              </Link>
+            </Typography>
+          </Box>
         </Box>
-      </Box>
+      </Paper>
     </Container>
   );
 };
