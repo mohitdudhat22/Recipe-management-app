@@ -50,7 +50,7 @@ const RecipeForm = () => {
         console.log(recipeData);
         await createRecipe(recipeData);
       }
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error saving recipe:', error);
     }
