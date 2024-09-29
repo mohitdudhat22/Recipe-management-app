@@ -78,7 +78,7 @@ const RecipeList = () => {
                 <CardMedia
                   component="img"
                   height="200"
-                  image={recipe.image || 'https://via.placeholder.com/300x200?text=No+Image'}
+                  image={recipe?.image !== null ? recipe?.image : 'https://via.placeholder.com/300x200?text=No+Image'}
                   alt={recipe.title}
                 />
                 <CardContent sx={{ flexGrow: 1, p: 3 }}>

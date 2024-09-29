@@ -49,7 +49,7 @@ app.use(morgan('dev'));
 app.use(helmet());
 app.use(limiter);
 // Routes
-app.use('/api/auth', authRoutes); // Change this line
+app.use('/api/auth', authRoutes);
 app.use('/api/recipes', authMiddleware, recipeRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 

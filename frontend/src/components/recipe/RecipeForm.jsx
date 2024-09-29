@@ -10,7 +10,9 @@ const RecipeForm = () => {
     instructions: '',
     cuisineType: '',
     cookingTime: '',
+    image: null,
   });
+  
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -33,28 +35,43 @@ const RecipeForm = () => {
   };
 
   const handleChange = (e) => {
-    setRecipe({ ...recipe, [e.target.name]: e.target.value });
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      setRecipe({ ...recipe, [name]: files[0] });
+    } else {
+      setRecipe({ ...recipe, [name]: value });
+    }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const recipeData = {
-        ...recipe,
+        title: recipe.title,
         ingredients: recipe.ingredients.split(',').map(item => item.trim()),
+        instructions: recipe.instructions,
+        cuisineType: recipe.cuisineType,
         cookingTime: parseInt(recipe.cookingTime),
+        image: recipe.image, // Make sure this is handled properly
       };
+  
+      const formData = new FormData();
+      for (const key in recipeData) {
+        formData.append(key, recipeData[key]);
+      }
+  
+      const token = localStorage.getItem('token');
       if (id) {
-        await updateRecipe(id, recipeData);
+        await updateRecipe(id, formData);
       } else {
-        console.log(recipeData);
-        await createRecipe(recipeData);
+        console.log(formData);
+        await createRecipe(formData);
       }
       navigate('/dashboard');
     } catch (error) {
       console.error('Error saving recipe:', error);
     }
   };
+  
 
   return (
     <Container component="main" maxWidth={false} sx={{
@@ -136,6 +153,13 @@ const RecipeForm = () => {
             type="number"
             value={recipe.cookingTime}
             onChange={handleChange}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            name="image"
+            onChange={handleChange}
+            style={{ marginTop: '16px', marginBottom: '16px' }}
           />
           <Button
             type="submit"

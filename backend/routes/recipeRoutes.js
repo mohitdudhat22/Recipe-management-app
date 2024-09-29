@@ -2,7 +2,7 @@ const express = require('express');
 const Recipe = require('../models/Recipe');
 const authMiddleware = require('../middleware/authMiddleware');
 const roleMiddleware = require('../middleware/roleMiddleware');
-const upload = require('../middleware/uploadMiddleware');
+const upload = require('../cloudinary/multer');
 const logger = require('../utils/logger');
 const router = express.Router();
 
@@ -28,8 +28,9 @@ const router = express.Router();
  *       500:
  *         description: Server error
  */
-router.post('/', async (req, res) => {
+router.post('/',upload.single('image'), async (req, res) => {
   try {
+    console.log(req.body);
     const newRecipe = new Recipe({...req.body, image: req.file ? req.file.path : null, author: req.user.id, 
       author: req.body.author || req.user.username});
     const savedRecipe = await newRecipe.save();
@@ -186,9 +187,13 @@ router.get('/:id', async (req, res) => {
  *       500:
  *         description: Server error
  */
-router.put('/:id', async (req, res) => {
+router.put('/:id',upload.single('image'), async (req, res) => {
   try {
-    const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    let imageUrl = null;
+    if (req.file) {
+      imageUrl = req.file.path;
+    }
+    const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.id, { $set: { ...req.body, image: imageUrl || req.body.image } }, { new: true });
     if (!updatedRecipe) {
       return res.status(404).json({ message: 'Recipe not found' });
     }
@@ -198,6 +203,7 @@ router.put('/:id', async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 
 /**
  * @swagger

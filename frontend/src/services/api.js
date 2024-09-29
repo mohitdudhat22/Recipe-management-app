@@ -38,12 +38,12 @@ export const getRecipe = async (id) => {
 };
 
 export const createRecipe = async (recipeData) => {
-  const response = await api.post('/recipes', recipeData);
+  const response = await api.post('/recipes',recipeData,{headers: {'Content-Type': 'multipart/form-data'}});
   return response.data;
 };
 
 export const updateRecipe = async (id, recipeData) => {
-  const response = await api.put(`/recipes/${id}`, recipeData);
+  const response = await api.put(`/recipes/${id}`, recipeData,{headers: {'Content-Type': 'multipart/form-data'}});
   return response.data;
 };
 
