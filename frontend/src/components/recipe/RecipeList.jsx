@@ -87,7 +87,7 @@ const RecipeList = () => {
                     Cuisine: {recipe.cuisineType}
                   </Typography>
                   <Typography variant="body2" color="textSecondary">
-                    Prep Time: {recipe.prepTime} mins
+                    Cooking Time: {recipe.cookingTime} mins
                   </Typography>
                 </CardContent>
                 <Box sx={{ p: 3, pt: 0 }}>

@@ -68,6 +68,15 @@ const RecipeDetail = () => {
         }}>
           {recipe.title}
         </Typography>
+         {recipe.image && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
+            <img
+              src={recipe.image}
+              alt={recipe.title}
+              style={{ maxWidth: '100%', height: 'auto', borderRadius: '10px' }}
+            />
+          </Box>
+        )}
         <Divider sx={{ mb: 3 }} />
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
